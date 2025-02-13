@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  
   <!-- SEO Meta Tags -->
-  <meta name="description" content="A fun and interactive Valentine’s Day themed web app. Play through messages and invite someone special to be your valentine! 🥺" />
-  <meta name="keywords" content="Valentine, Valentines Day, Love, Gift, Interactive, Web app, Sweet Messages" />
+  <meta name="description" content="A fun and interactive Valentine’s Day themed web app." />
+  <meta name="keywords" content="Valentine, Love, Interactive, Web App" />
   <meta name="author" content="dev L0N3LY" />
 
-  <!-- Open Graph (OG) Tags for better social media sharing -->
+  <!-- Open Graph (OG) Tags for Social Media Sharing -->
   <meta property="og:title" content="Would You Be My Valentine? 💘" />
   <meta property="og:description" content="Say yes please 🥺." />
   <meta property="og:image" content="assets/seo.png" />
@@ -35,156 +35,115 @@
     }
   </script>
 
+  <!-- External Scripts -->
   <script src="//unpkg.com/alpinejs" defer></script>
   <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  
   <title>Pls be my val</title>
 </head>
 
 <body class="bg-white mx-auto max-w-lg overflow-hidden">
+  
+  <!-- Background Music -->
   <audio id="bg-music" autoplay loop x-data="{ playMusic() { 
-          let audio = document.getElementById('bg-music'); 
-          audio.play().catch(() => { 
-              document.addEventListener('click', () => audio.play(), { once: true });
-          });
-      } }" x-init="playMusic()">
+      let audio = document.getElementById('bg-music'); 
+      audio.play().catch(() => { 
+        document.addEventListener('click', () => audio.play(), { once: true });
+      });
+    } }" x-init="playMusic()">
     <source src="assets/Lullaby-Star-River-Flows-In-You.mp3" type="audio/mpeg" />
-    Your browser does not support the audio tag.
   </audio>
 
   <div x-data="{
-        // State Variables
         size: 1,
         messages: [
           'Baby please say yes',
           'Don’t break my heart oh',
           'I swear you won’t regret it.',
           'Just one yes, my love',
-          'I will treat my queen like royalty',
           'My angel, have mercy, pick yes 😭',
-          '<br> Fine girl, I’m on my knees 🥺',
-          'Omalicha nwa, gimme small green light na',
-          'Baby girl, e no hard oh <br> Just tap that yes button',
           'I love you more than shawarma',
-          'I fit roll for ground oh 😭',
-          'No worry, I go run you 5GB <br> Just say yes make I know say love dey',
-          'Sugarplum, I dey wait oh',
-          'Hello pretty <br> Will you be my Val and make my heart dance?',
-          'We go chop jollof and binge-watch Nollywood classics',
-          'Oh <br> You no like that one? Okay K-drama marathon',
-          'Oh you want action? <br> John Wick, fast fast',
-          'Baby I fit compose love song for you oh',
-          'If you say yes, I go dance Alanta for junction',
-          'Even the angels know you’re the one, just press yes 😍',
-          'No pressure oh, but my heart dey on hold for your answer 🥺',
-          'Baby, see my love na credit alert, e sure die!',
-          'Say yes and I go buy you suya with extra pepper',
-          'Valentine is coming oh <br> Don’t leave me single na 😭',
-          'I go do breakfast in bed plus chilled zobo',
-          'Fine girl, I go shout your name for radio',
-          'Even if you wan see proof of love, I fit trek come your side',
-          'Baby, I swear, my love strong pass dollar exchange rate',
-          'I no get money pass Dangote oh, but my love pass am',
-          'Say yes, make we chop life together 😘'
+          'No pressure oh, but my heart dey on hold for your answer 🥺'
         ],
-        // Limit the growth of the "Yes" button
         maxSize: 10,
-        // Button positions (within the button container)
         yesPos: { top: 0, left: 0 },
         noPos: { top: 0, left: 0 },
-        // Update button positions and ensure they do not overlap
         updateButtonPositions() {
           const container = this.$refs.buttonContainer;
           const containerWidth = container.offsetWidth;
           const containerHeight = container.offsetHeight;
-          // Estimated dimensions for buttons (in pixels)
-          const yesBtnWidth = 150;
-          const yesBtnHeight = 60;
-          const noBtnWidth = 80;
-          const noBtnHeight = 40;
-          // Generate a random position for the "Yes" button
+          const yesBtnWidth = 150, yesBtnHeight = 60;
+          const noBtnWidth = 80, noBtnHeight = 40;
+          
           this.yesPos = {
             left: Math.random() * (containerWidth - yesBtnWidth),
             top: Math.random() * (containerHeight - yesBtnHeight)
           };
-          // Helper function to check if two rectangles overlap
-          const isOverlapping = (p1, p2, w1, h1, w2, h2) => {
-            return !(
-              p1.left + w1 < p2.left ||
-              p2.left + w2 < p1.left ||
-              p1.top + h1 < p2.top ||
-              p2.top + h2 < p1.top
-            );
-          };
-          // Generate a random position for the "No" button ensuring no overlap
-          let noPos;
-          let attempts = 0;
+          
+          let noPos, attempts = 0;
           do {
             noPos = {
               left: Math.random() * (containerWidth - noBtnWidth),
               top: Math.random() * (containerHeight - noBtnHeight)
             };
             attempts++;
-          } while (
-            attempts < 20 &&
-            isOverlapping(this.yesPos, noPos, yesBtnWidth, yesBtnHeight, noBtnWidth, noBtnHeight)
-          );
+          } while (attempts < 20 && 
+                   Math.abs(this.yesPos.left - noPos.left) < yesBtnWidth && 
+                   Math.abs(this.yesPos.top - noPos.top) < yesBtnHeight);
+          
           this.noPos = noPos;
         },
         init() {
-          this.params = new URLSearchParams(window.location.search);
-          this.name = this.params.get('name');
           this.updateButtonPositions();
         }
       }" class="h-screen flex flex-col text-center px-4" x-init="init()">
-
+    
     <!-- Main Content -->
-    <div x-show="size !== 0" class="w-full flex flex-col" style="height: 100%;">
+    <div x-show="size !== 0" class="w-full flex flex-col h-full">
+      
       <!-- Top Section: GIF and Message -->
       <div class="flex-grow">
-        <img src="assets/love-gif.gif" alt="GIF" class="mx-auto" style="animation-iteration-count: infinite; max-height: 40vh;" />
-        <h1 x-show="size == 1" class="text-2xl" x-text="'Would you be my val 🥺 ' + (name ?? '')"></h1>
+        <img src="assets/love-gif.gif" alt="GIF" class="mx-auto max-h-40vh" />
+        <h1 x-show="size == 1" class="text-2xl" x-text="'Would you be my val 🥺' "></h1>
         <p class="text-lg" x-html="messages[(size - 1) % messages.length]"></p>
       </div>
+      
       <!-- Bottom Section: Button Container -->
-      <div x-ref="buttonContainer" class="relative w-full" style="height: 30vh;">
-        <!-- "Yes" Button with fun effects and capped growth -->
-        <button
-          :class="(size >= 4 && size % 2 !== 0) ? 'animate-bounce' : 'animate-pulse'"
-          @click="size = 0"
+      <div x-ref="buttonContainer" class="relative w-full h-30vh">
+        
+        <!-- "Yes" Button -->
+        <button @click="size = 0"
           class="text-white rounded-lg transition-all duration-300"
           :style="`
             position: absolute;
             left: ${yesPos.left}px;
             top: ${yesPos.top}px;
             padding: ${Math.min(size, maxSize) * 4}px;
-            transform: scale(${1 + Math.min(size, maxSize) * 0.1}) rotate(${Math.min(size, maxSize) * 5}deg);
+            transform: scale(${1 + Math.min(size, maxSize) * 0.1});
             background-color: hsl(${size * 10}, 70%, 50%);
-            box-shadow: 0 ${size * 2}px ${size * 4}px rgba(0, 0, 0, 0.3);
-          `"
-        >
+          `">
           Yes
         </button>
+        
         <!-- "No" Button -->
-        <button
-          @click="size = size + 1; updateButtonPositions()"
+        <button @click="size = size + 1; updateButtonPositions()"
           class="bg-red-500 text-white px-2 py-1 rounded-lg transition-all duration-300"
           :style="`
             position: absolute;
             left: ${noPos.left}px;
             top: ${noPos.top}px;
-          `"
-        >
+          `">
           No
         </button>
       </div>
     </div>
-
+    
     <!-- Final State When "Yes" is Clicked -->
-    <div x-cloak x-show="size == 0" class="flex flex-col justify-center items-center">
-      <img src="assets/love.gif" alt="GIF" class="h-[70vw] w-[70vw]" style="animation-iteration-count: infinite;" />
-      <h1 class="text-2xl" x-html="'Thanks Amore Mio 😘 <br> We\'ll see each other soon'"></h1>
+    <div x-show="size == 0" class="flex flex-col justify-center items-center">
+      <img src="assets/love.gif" alt="GIF" class="h-70vw w-70vw" />
+      <h1 class="text-2xl">Thanks Amore Mio 😘 <br> We’ll see each other soon</h1>
     </div>
   </div>
-</body>
 
+</body>
 </html>
