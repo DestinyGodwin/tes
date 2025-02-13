@@ -2,116 +2,126 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pls be my val</title>
-  <script src="//unpkg.com/alpinejs" defer></script>
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #fff;
-      overflow: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .container {
-      text-align: center;
-      width: 100%;
-      max-width: 500px;
-    }
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="A fun and interactive Valentine’s Day themed web app. Play through messages and invite someone special to be your valentine! 🥺">
+    <meta name="keywords" content="Valentine, Valentines Day, Love, Gift, Interactive, Web app, Sweet Messages">
+    <meta name="author" content="dev L0N3LY">
 
-    .btn-container {
-      position: relative;
-      width: 100%;
-      height: 150px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 20px;
-    }
+    <!-- Open Graph (OG) Tags for better social media sharing -->
+    <meta property="og:title" content="Would You Be My Valentine? 💘">
+    <meta property="og:description" content="Say yes please 🥺.">
+    <meta property="og:image" content="assets/seo.png">
+    <meta property="og:url" content="https://DestinyGodwin.github.io/tes">
+    <meta property="og:type" content="website">
 
-    .yes-btn, .no-btn {
-      position: absolute;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
-    }
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Would You Be My Valentine? 💘">
+    <meta name="twitter:description" content="Say yes please 🥺.">
+    <meta name="twitter:image" content="assets/seo.png">
 
-    .yes-btn {
-      background-color: #4CAF50;
-      color: white;
-    }
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Would You Be My Valentine? 💘",
+          "description": "Say yes plssssss 🥺.",
+          "url": "https://DestinyGodwin.github.io/tes",
+          "image": "assets/seo.png"
+        }
+        </script>
 
-    .no-btn {
-      background-color: #FF4136;
-      color: white;
-    }
-  </style>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <title>Pls be my val</title>
 </head>
 
-<body>
-  <div class="container" x-data="{
-    size: 1,
-    messages: [
-      'Baby please say yes',
-      'Don’t break my heart oh',
-      'I swear you won’t regret it.',
-      'Just one yes, my love',
-      'I will treat my queen like royalty',
-      'My angel, have mercy, pick yes 😭',
-      '<br> Fine girl, I’m on my knees 🥺',
-      'Omalicha nwa, gimme small green light na',
-      'Baby girl, e no hard oh <br> Just tap that yes button',
-      'I love you more than shawarma',
-      'I fit roll for ground oh 😭',
-      'No worry, I go run you 5GB <br> Just say yes make I know say love dey',
-      'Sugarplum, I dey wait oh',
-      'Hello pretty <br> Will you be my Val and make my heart dance?',
-      'We go chop jollof and binge-watch Nollywood classics',
-      'Oh <br> You no like that one? Okay K-drama marathon',
-      'Oh you want action? <br> John Wick, fast fast',
-      'Baby I fit compose love song for you oh',
-      'If you say yes, I go dance Alanta for junction',
-      'Even the angels know you’re the one, just press yes 😍',
-      'No pressure oh, but my heart dey on hold for your answer 🥺',
-      'Baby, see my love na credit alert, e sure die!',
-      'Say yes and I go buy you suya with extra pepper',
-      'Valentine is coming oh <br> Don’t leave me single na 😭',
-      'I go do breakfast in bed plus chilled zobo',
-      'Fine girl, I go shout your name for radio',
-      'Even if you wan see proof of love, I fit trek come your side',
-      'Baby, I swear, my love strong pass dollar exchange rate',
-      'I no get money pass Dangote oh, but my love pass am',
-      'Say yes, make we chop life together 😘'
-    ],
-    yesPos: { top: '50%', left: '50%' },
-    noPos: { top: '50%', left: '50%' },
-    moveNoButton() {
-      this.noPos = {
-        top: Math.random() * 80 + '%',
-        left: Math.random() * 80 + '%'
-      };
-    }
-  }">
-    <h1 class="text-2xl" x-text="'Would you be my val 🥺' "></h1>
-    <p class="text-lg" x-html="messages[(size - 1) % messages.length]"></p>
-    <div class="btn-container">
-      <button class="yes-btn" @click="size = 0" :style="`top: ${yesPos.top}; left: ${yesPos.left};`">
-        Yes
-      </button>
-      <button class="no-btn" @click="size += 1; moveNoButton();" :style="`top: ${noPos.top}; left: ${noPos.left};`">
-        No
-      </button>
+<body class="bg-white my-4 mx-auto max-w-lg">
+    <audio id="bg-music" autoplay loop x-data="{ playMusic() { 
+        let audio = document.getElementById('bg-music'); 
+        audio.play().catch(() => { 
+            document.addEventListener('click', () => audio.play(), { once: true });
+        });
+        } }" x-init="playMusic()">
+        <source src="assets/Lullaby-Star-River-Flows-In-You.mp3" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
+
+    <div x-data="{
+            init() {
+                this.params = new URLSearchParams(window.location.search);
+                this.name = this.params.get('name');
+                this.size = 1;
+                this.messages = [
+                'Baby please say yes',
+                'Don’t break my heart oh',
+                'I swear you won’t regret it.',
+                'Just one yes, my love',
+                'I will treat my queen like royalty',
+                'My angel, have mercy, pick yes 😭',
+                '<br> Fine girl, I’m on my knees 🥺',
+                'Omalicha nwa, gimme small green light na',
+                'Baby girl, e no hard oh <br> Just tap that yes button',
+                'I love you more than shawarma',
+                'I fit roll for ground oh 😭',
+                'No worry, I go run you 5GB <br> Just say yes make I know say love dey',
+                'Sugarplum, I dey wait oh',
+                'Hello pretty <br> Will you be my Val and make my heart dance?',
+                'We go chop jollof and binge-watch Nollywood classics',
+                'Oh <br> You no like that one? Okay K-drama marathon',
+                'Oh you want action? <br> John Wick, fast fast',
+                'Baby I fit compose love song for you oh',
+                'If you say yes, I go dance Alanta for junction',
+                'Even the angels know you’re the one, just press yes 😍',
+                'No pressure oh, but my heart dey on hold for your answer 🥺',
+                'Baby, see my love na credit alert, e sure die!',
+                'Say yes and I go buy you suya with extra pepper',
+                'Valentine is coming oh <br> Don’t leave me single na 😭',
+                'I go do breakfast in bed plus chilled zobo',
+                'Fine girl, I go shout your name for radio',
+                'Even if you wan see proof of love, I fit trek come your side',
+                'Baby, I swear, my love strong pass dollar exchange rate',
+                'I no get money pass Dangote oh, but my love pass am',
+                'Say yes, make we chop life together 😘'
+            ]
+            ;
+            }
+        }" class="h-screen flex flex-col justify-center items-center text-center px-4">
+
+        <div x-show="size !== 0" class="flex flex-col justify-center items-center  text-center">
+            <img src="assets/love-gif.gif" alt="GIF" style="animation-iteration-count: infinite;">
+
+            <h1 x-show="size == 1" class="text-2xl" x-text="'Would you be my val 🥺 ' + (name ?? '')"></h1>
+
+            <p class="text-lg" x-html="messages[(size - 1) % messages.length]"></p>
+
+            <div class="flex items-center gap-2 mt-4">
+                <!-- Button "Yes" with conditional positioning -->
+                <button :class="(size >= 4 && size % 2 !== 0) ? 'order-last' : ''" @click="size = 0"
+                    class="bg-green-500 text-white rounded-lg transition-all duration-300"
+                    :style="'padding: ' + (size * 4) + 'px ' + (size * 4) + 'px;'">
+                    Yes
+                </button>
+
+                <!-- Button "No" with conditional positioning -->
+                <button :class="(size >= 4 && size % 2 === 0) ? 'order-last' : ''"
+                    class="bg-red-500 text-white px-1 py-1 rounded-lg" @click="size = size + 1">
+                    No
+                </button>
+            </div>
+        </div>
+
+        <img x-cloak x-show="size == 0" src="assets/love.gif" alt="GIF" class="h-[70vw] w-[70vw]"
+            style="animation-iteration-count: infinite;">
+        <h1 x-cloak x-show="size == 0" class="text-2xl" x-html="'Thank you my love 😘 <br> we\'ll see each other soon'">
+        </h1>
+
     </div>
-    <div x-show="size == 0">
-      <h1>Thanks Amore Mio 😘 <br> We’ll see each other soon</h1>
-    </div>
-  </div>
 </body>
 
 </html>
