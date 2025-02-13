@@ -40,7 +40,7 @@
   <title>Pls be my val</title>
 </head>
 
-<body class="bg-white my-4 mx-auto max-w-lg">
+<body class="bg-white mx-auto max-w-lg overflow-hidden">
   <audio id="bg-music" autoplay loop x-data="{ playMusic() { 
           let audio = document.getElementById('bg-music'); 
           audio.play().catch(() => { 
@@ -52,7 +52,7 @@
   </audio>
 
   <div x-data="{
-        // Initial state
+        // State Variables
         size: 1,
         messages: [
           'Baby please say yes',
@@ -86,48 +86,68 @@
           'I no get money pass Dangote oh, but my love pass am',
           'Say yes, make we chop life together 😘'
         ],
-        // Limit the growth of the Yes button
+        // Limit the growth of the "Yes" button
         maxSize: 10,
-        // Initial positions for buttons (relative to the button container)
+        // Button positions (within the button container)
         yesPos: { top: 0, left: 0 },
         noPos: { top: 0, left: 0 },
-        // Update button positions within the container (avoiding the top GIF area)
+        // Update button positions and ensure they do not overlap
         updateButtonPositions() {
           const container = this.$refs.buttonContainer;
           const containerWidth = container.offsetWidth;
           const containerHeight = container.offsetHeight;
-          // Estimate button dimensions (these are rough numbers)
-          const btnWidth = 100;
-          const btnHeight = 50;
-          // Random positions ensuring the entire button fits within the container
+          // Estimated dimensions for buttons (in pixels)
+          const yesBtnWidth = 150;
+          const yesBtnHeight = 60;
+          const noBtnWidth = 80;
+          const noBtnHeight = 40;
+          // Generate a random position for the "Yes" button
           this.yesPos = {
-            left: Math.random() * (containerWidth - btnWidth),
-            top: Math.random() * (containerHeight - btnHeight)
+            left: Math.random() * (containerWidth - yesBtnWidth),
+            top: Math.random() * (containerHeight - yesBtnHeight)
           };
-          this.noPos = {
-            left: Math.random() * (containerWidth - btnWidth),
-            top: Math.random() * (containerHeight - btnHeight)
+          // Helper function to check if two rectangles overlap
+          const isOverlapping = (p1, p2, w1, h1, w2, h2) => {
+            return !(
+              p1.left + w1 < p2.left ||
+              p2.left + w2 < p1.left ||
+              p1.top + h1 < p2.top ||
+              p2.top + h2 < p1.top
+            );
           };
+          // Generate a random position for the "No" button ensuring no overlap
+          let noPos;
+          let attempts = 0;
+          do {
+            noPos = {
+              left: Math.random() * (containerWidth - noBtnWidth),
+              top: Math.random() * (containerHeight - noBtnHeight)
+            };
+            attempts++;
+          } while (
+            attempts < 20 &&
+            isOverlapping(this.yesPos, noPos, yesBtnWidth, yesBtnHeight, noBtnWidth, noBtnHeight)
+          );
+          this.noPos = noPos;
         },
         init() {
           this.params = new URLSearchParams(window.location.search);
           this.name = this.params.get('name');
-          // Initialize button positions
           this.updateButtonPositions();
         }
-      }" class="h-screen flex flex-col justify-center items-center text-center px-4">
+      }" class="h-screen flex flex-col text-center px-4" x-init="init()">
 
-    <!-- Main Content (GIF, Messages, etc.) -->
-    <div x-show="size !== 0" class="w-full">
-      <div>
-        <img src="assets/love-gif.gif" alt="GIF" class="mx-auto" style="animation-iteration-count: infinite;" />
+    <!-- Main Content -->
+    <div x-show="size !== 0" class="w-full flex flex-col" style="height: 100%;">
+      <!-- Top Section: GIF and Message -->
+      <div class="flex-grow">
+        <img src="assets/love-gif.gif" alt="GIF" class="mx-auto" style="animation-iteration-count: infinite; max-height: 40vh;" />
         <h1 x-show="size == 1" class="text-2xl" x-text="'Would you be my val 🥺 ' + (name ?? '')"></h1>
         <p class="text-lg" x-html="messages[(size - 1) % messages.length]"></p>
       </div>
-
-      <!-- Button Container: Positioned Relative and placed below the GIF -->
-      <div x-ref="buttonContainer" class="relative w-full" style="height: 60vh;">
-        <!-- "Yes" Button with extra effects -->
+      <!-- Bottom Section: Button Container -->
+      <div x-ref="buttonContainer" class="relative w-full" style="height: 30vh;">
+        <!-- "Yes" Button with fun effects and capped growth -->
         <button
           :class="(size >= 4 && size % 2 !== 0) ? 'animate-bounce' : 'animate-pulse'"
           @click="size = 0"
@@ -144,7 +164,6 @@
         >
           Yes
         </button>
-
         <!-- "No" Button -->
         <button
           @click="size = size + 1; updateButtonPositions()"
@@ -160,10 +179,10 @@
       </div>
     </div>
 
-    <!-- Final State (When "Yes" is clicked) -->
+    <!-- Final State When "Yes" is Clicked -->
     <div x-cloak x-show="size == 0" class="flex flex-col justify-center items-center">
       <img src="assets/love.gif" alt="GIF" class="h-[70vw] w-[70vw]" style="animation-iteration-count: infinite;" />
-      <h1 class="text-2xl" x-html="'Thank you my love 😘 <br> we\'ll see each other soon'"></h1>
+      <h1 class="text-2xl" x-html="'Thanks Amore Mio 😘 <br> We\'ll see each other soon'"></h1>
     </div>
   </div>
 </body>
